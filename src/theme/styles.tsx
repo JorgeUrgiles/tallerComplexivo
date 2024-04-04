@@ -16,6 +16,23 @@ export const styles=StyleSheet.create({
     btn:{
         marginTop:10,
         width:"20%"
+    },
+    textNavigation:{
+        marginTop:20,
+        fontSize:15,
+        color:"#333",
+        fontWeight:'bold',
+        
+    },
+    contentHome:{
+        flex:1,
+        marginVertical:50,
+        marginHorizontal:20,
+
+    },
+    headerHome:{
+        flexDirection:'row',
+        gap:15,
+        alignItems:'center'
     }
-    
 })
