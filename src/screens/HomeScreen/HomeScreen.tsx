@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { styles } from '../../theme/styles'
-import { Avatar, Button, Divider, FAB, IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper'
+import { Avatar, Button, Divider, FAB, IconButton, Modal, Portal, RadioButton, Text, TextInput } from 'react-native-paper'
 import firebase, { getAuth, signOut, updateProfile } from 'firebase/auth'
 import { auth, dbRealTime } from '../../config/firebase'
 import { AutoCardComponent } from './components/AutoCardComponent'
 import { NewAutoComponent } from './components/NewAutoComponent'
 import { onValue, ref } from 'firebase/database'
 import { useNavigation } from '@react-navigation/native'
+import { LoginScreen } from '../LoginScreen'
 
 interface UserForm{
   name:string
@@ -35,6 +36,11 @@ export const HomeScreen = () => {
   const [userAuth, setUserAuth] = useState<firebase.User | null>(null)
  //HOok use state para tomar la lista de autos arreglo vacio de tipo auto
  const [autos, setAutos] = useState<Auto[]>([])
+
+
+
+
+
 
   //Hook useEffect para capturar la data del usuario logeado
   useEffect(() => {
@@ -72,12 +78,25 @@ const getAllAutos = () => {
     })
 }
 
+const handleLogout = async () => { 
+    const auth = getAuth();
+   
+   await signOut(auth).then(() => {
+
+      console.log("Se cerro sesion de forma exitosa");
+  
+    }).catch((error) => {
+   
+    });
+}
+
+
 
   return (
     <>
     <View style={styles.contentHome}>
         <View style={styles.headerHome}>
-            <Avatar.Text size={55} label="JU" />
+        <Avatar.Image size={74} source={require('../../assets/carro2.png')} />
             <View>
                 <Text variant='bodySmall'>Bienvenido</Text>
                 <Text variant='labelLarge'>{userForm.name}</Text>
@@ -85,11 +104,22 @@ const getAllAutos = () => {
             </View>
             <View style={styles.icon}>
                 <IconButton
+                 iconColor="#85C1E9"
 
                     icon="cog"
                     size={30}
                     mode='contained'
                     onPress={() => setShowModalProfile(true)}
+                />
+            </View>
+            <View style={styles.icon}>
+                <IconButton
+                 iconColor="#85C1E9"
+
+                    icon="logout"
+                    size={30}
+                    mode='contained'
+                    onPress={handleLogout}
                 />
             </View>
 
@@ -101,6 +131,7 @@ const getAllAutos = () => {
                 keyExtractor={item => item.id}
             />
         </View> 
+        
 
 
     </View>
@@ -125,10 +156,12 @@ const getAllAutos = () => {
                     disabled
                 />
             </View>
-            <Button mode='contained' onPress={() => handlerUpdateUser()}>Actualizar</Button>
+            <Button buttonColor="#85C1E9"
+             mode='contained' onPress={() => handlerUpdateUser()}>Actualizar</Button>
         </Modal>
     </Portal>
-    <FAB
+    <FAB 
+        rippleColor="#85C1E9"
         icon="plus"
         style={styles.fab}
         onPress={() => setShowModalAuto(true)}

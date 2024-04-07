@@ -45,7 +45,7 @@ const handlerRegister = async() => {
         setMessageSnackbar({
             visible:true,
             mensaje:"Complete todos los campos",
-            color:"#964891"
+            color: "#85C1E9"
         })
         return;
 
@@ -68,7 +68,7 @@ const handlerRegister = async() => {
         setMessageSnackbar({
             visible:true,
             mensaje:"No se pudo realizar el registro",
-            color:"#964891"
+            color: "#85C1E9"
         })
         
     }
@@ -96,6 +96,7 @@ const handlerRegister = async() => {
                 onChangeText={(value)=>handlerSetRegisterForm('password',value)}
             />
             <Button mode='contained'
+            buttonColor="#85C1E9"
             onPress={()=>handlerRegister()}
             style={styles.btn}
             >Registrar</Button>

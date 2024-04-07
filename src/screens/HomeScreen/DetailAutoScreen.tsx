@@ -81,9 +81,9 @@ export const DetailAutoScreen = () => {
         />
 
     </View>
-    <Button mode='contained' icon='email-sync' onPress={() => handlerUpdateLetter()}>Acutualizar</Button>
+    <Button buttonColor="#85C1E9" mode='contained' icon='email-sync' onPress={() => handlerUpdateLetter()}>Acutualizar</Button>
 
-    <Button mode='contained' icon='email-remove' onPress={handlerDeleteLetter}>Eliminar</Button>
+    <Button buttonColor="#85C1E9" mode='contained' icon='email-remove' onPress={handlerDeleteLetter}>Eliminar</Button>
 </View>
     
   )

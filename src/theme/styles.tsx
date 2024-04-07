@@ -62,15 +62,18 @@ export const styles=StyleSheet.create({
         position: 'absolute',
         margin: 16,
         right: 0,
-        bottom: 0,
+        bottom: 100,
+        backgroundColor:"#85C1E9"
       },
-
-      fab2: {
+      btn2: {
         position: 'absolute',
         margin: 16,
-        left: 0,
-        bottom: 0,
+        right: 0,
+        bottom: 100,
+        backgroundColor:"#85C1E9"
       },
+
+ 
       contentDetailLetter:{
         flex:1,
         paddingHorizontal:20,

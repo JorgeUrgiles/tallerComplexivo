@@ -81,7 +81,7 @@ export const NewAutoComponent = ({visible,setVisible}:Props) => {
           multiline={true}
           numberOfLines={7}
           />
-          <Button style={{marginTop:20}} mode='contained' onPress={()=>handlerSaveAuto()}>Guardar</Button>
+          <Button buttonColor="#85C1E9" style={{marginTop:20}} mode='contained' onPress={()=>handlerSaveAuto()}>Guardar</Button>
           </Modal>
         
       </Portal>

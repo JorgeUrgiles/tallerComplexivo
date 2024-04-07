@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { View } from 'react-native'
+import { Image, View } from 'react-native'
 import { Button, Snackbar, Text, TextInput } from 'react-native-paper'
 import { styles } from '../theme/styles'
 import { signInWithEmailAndPassword } from 'firebase/auth'
@@ -17,6 +17,7 @@ interface MessageSnackbar {
 }
 
 export const LoginScreen = () => {
+    const imagen = require('../assets/log.png')
     const [loginForm, setLoginForm] = useState<LoginForm>({
         email: "",
         password: ""
@@ -43,12 +44,12 @@ export const LoginScreen = () => {
             setMessageSnackbar({
                 visible: true,
                 mensaje: "Complete todos los campos",
-                color: "#964891"
+                color: "#85C1E9"
             })
             return;
 
         }
-        //Registrar el nombre
+        
         try {
             const response = await signInWithEmailAndPassword(
                 auth,
@@ -63,13 +64,18 @@ export const LoginScreen = () => {
             setMessageSnackbar({
                 visible: true,
                 mensaje: "No se pudo realizar el registro",
-                color: "#964891"
+                color: "#85C1E9"
             })
 
         }
     }
     return (
         <View style={styles.content}>
+            <Image style={{ width: 300, height: 200,resizeMode: 'contain' }} 
+            source={imagen}
+            />
+            <Text variant='headlineMedium'>CARWISH</Text>
+            <Text variant='headlineMedium'>Crea tu lista de vehicuklos soñados!</Text>
             <Text variant='headlineMedium'>Login</Text>
             <TextInput
                 mode='outlined'
@@ -89,6 +95,7 @@ export const LoginScreen = () => {
                 onChangeText={(value) => handlerSetLoginForm('password', value)}
             />
             <Button mode='contained'
+                buttonColor="#85C1E9"
                 onPress={() => handlerLogin()}
                 style={styles.btn}
             >Iniciar sesion</Button>

@@ -19,8 +19,8 @@ export const AutoCardComponent = ({auto}:Props) => {
        
         <View style={styles.icon}>
             <IconButton
-            icon="email-alert"
-            size={25}
+            icon="car"
+            size={55}
             onPress={()=> navigation.dispatch(CommonActions.navigate({name:'Detail',params:{auto}}))}
             />
         </View>
