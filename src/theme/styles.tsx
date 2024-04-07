@@ -39,7 +39,7 @@ export const styles=StyleSheet.create({
         flex:1,
         alignItems:'flex-end'                                                                                                                                                                                                                                                                    
     },
-    modalProfile:{
+    modal:{
         paddingHorizontal:20,
         paddingVertical:20,
         backgroundColor:'#fff',
@@ -64,4 +64,29 @@ export const styles=StyleSheet.create({
         right: 0,
         bottom: 0,
       },
+
+      fab2: {
+        position: 'absolute',
+        margin: 16,
+        left: 0,
+        bottom: 0,
+      },
+      contentDetailLetter:{
+        flex:1,
+        paddingHorizontal:20,
+        backgroundColor:'#fff',
+        gap:20
+
+      },
+    subjectLetter:{
+        flexDirection:'row',
+        alignItems:'center',
+        gap:10
+    },
+    textMessage:{
+        marginBottom:10,
+        fontWeight:'bold',
+        fontSize:18
+    }
+    
 })

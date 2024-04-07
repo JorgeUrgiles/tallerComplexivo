@@ -2,22 +2,26 @@ import React, { useEffect, useState } from 'react'
 import { FlatList, View } from 'react-native'
 import { styles } from '../../theme/styles'
 import { Avatar, Button, Divider, FAB, IconButton, Modal, Portal, Text, TextInput } from 'react-native-paper'
-import firebase, { updateProfile } from 'firebase/auth'
-import { auth } from '../../config/firebase'
+import firebase, { getAuth, signOut, updateProfile } from 'firebase/auth'
+import { auth, dbRealTime } from '../../config/firebase'
 import { AutoCardComponent } from './components/AutoCardComponent'
+import { NewAutoComponent } from './components/NewAutoComponent'
+import { onValue, ref } from 'firebase/database'
+import { useNavigation } from '@react-navigation/native'
 
 interface UserForm{
   name:string
 }
 //interface para trabajar la data de el auto
-interface Auto {
+export interface Auto {
     id: string,
-    to: string,
-    subject: string,
-    message: string
+    modelo: string,
+    marca: string,
+    descripcion: string
 }
 
 export const HomeScreen = () => {
+    const navigation = useNavigation()
       //hook usestate para controlar la visibiliad del modal
       const [showModalProfile, setShowModalProfile] = useState(false)
 
@@ -29,26 +33,24 @@ export const HomeScreen = () => {
     name:''
   })
   const [userAuth, setUserAuth] = useState<firebase.User | null>(null)
-
-
-   //Funcion para tomar llos datos del formulario y actualizar la data
-   const handlerUpdateUserForm = (key: string, value: string) => {
-    setUserForm({ ...userForm, [key]: value })
-}
-
  //HOok use state para tomar la lista de autos arreglo vacio de tipo auto
- const [autos, setAutos] = useState<Auto[]>([
-    { id: '1', to: 'Ariel Ron', subject: 'Complexivo', message: 'El examen es el 14 del 2024' }
-])
+ const [autos, setAutos] = useState<Auto[]>([])
 
   //Hook useEffect para capturar la data del usuario logeado
   useEffect(() => {
 
     setUserAuth(auth.currentUser) // datos del usuario logeado       
     setUserForm({ name: auth.currentUser?.displayName ?? '' })
+    getAllAutos()
 
 
 }, [])
+
+   //Funcion para tomar llos datos del formulario y actualizar la data
+   const handlerUpdateUserForm = (key: string, value: string) => {
+    setUserForm({ ...userForm, [key]: value })
+}
+
 
 //Funcion actualiza la data del usuario, usuario logueado
 const handlerUpdateUser = async () => {
@@ -56,7 +58,21 @@ const handlerUpdateUser = async () => {
     // console.log(userForm);
     setShowModalProfile(false)
 }
-    
+const getAllAutos = () => {
+    const dbRef = ref(dbRealTime, 'autos')
+    onValue(dbRef, (snapshot) => {
+        const data = snapshot.val()
+        const getKeys = Object.keys(data)
+        const listAutos: Auto[] = []
+        getKeys.forEach((key) => {
+            const value = { ...data[key], id: key }
+            listAutos.push(value)
+        })
+        setAutos(listAutos)
+    })
+}
+
+
   return (
     <>
     <View style={styles.contentHome}>
@@ -81,7 +97,7 @@ const handlerUpdateUser = async () => {
      <View>
             <FlatList
                 data={autos}//arreglo que vamos a recorrer
-                renderItem={({ item }) => <AutoCardComponent />}
+                renderItem={({ item }) => <AutoCardComponent auto={item} />}
                 keyExtractor={item => item.id}
             />
         </View> 
@@ -89,7 +105,7 @@ const handlerUpdateUser = async () => {
 
     </View>
     <Portal>
-        <Modal visible={showModalProfile} contentContainerStyle={styles.modalProfile}>
+        <Modal visible={showModalProfile} contentContainerStyle={styles.modal}>
             <View style={styles.headerModal}>
                 <Text variant='headlineLarge'>Mi perfil</Text>
                 <IconButton icon='close' onPress={() => setShowModalProfile(false)} />
@@ -115,9 +131,9 @@ const handlerUpdateUser = async () => {
     <FAB
         icon="plus"
         style={styles.fab}
-        onPress={() => console.log('Pressed')}
+        onPress={() => setShowModalAuto(true)}
     />
-    {/* <NewLetterComponent visible={showModalLetter} setVisible={setShowModalLetter}/> */}
+  <NewAutoComponent visible={showModalAuto} setVisible={setShowModalAuto}/> 
     
     </>
   )

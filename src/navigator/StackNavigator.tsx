@@ -8,11 +8,15 @@ import { styles } from '../theme/styles'
 import { ActivityIndicator } from 'react-native-paper'
 import { View } from 'react-native'
 import { createStackNavigator } from '@react-navigation/stack'
+import { DetailAutoScreen } from '../screens/HomeScreen/DetailAutoScreen'
 
-interface Routes{
-    name:string,
-    screen:()=>JSX.Element
+interface Routes {
+    name: string,
+    screen: () => JSX.Element
+    headerShow?:boolean
+    title?:string
 }
+
 const Stack = createStackNavigator();
 export const StackNavigator = () => {
     //HOOK PARA VER SI ESTA LOGEADO O NO
@@ -20,50 +24,51 @@ export const StackNavigator = () => {
 
     //HOOK PARA  CARGA INICIAL
     const [isLoading, setIsLoading] = useState(false)
- //USE STATE PARA VALIDA EL ESTADO DE LA AUTENTICAION
+    //USE STATE PARA VALIDA EL ESTADO DE LA AUTENTICAION
     useEffect(() => {
         setIsLoading(true)
-        onAuthStateChanged(auth,(user)=>{
-            if(user){
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
                 setIsAuth(true)
             }
             setIsLoading(false);
         })
-    
-      
+
+
     }, [])
     //Arreglo con rutas para ususarios no Autenticados
-    const routesNoAuth:Routes[]=[
-        {name:"Login",screen:LoginScreen},
-        {name:"Register",screen:RegisterScreen}                
+    const routesNoAuth: Routes[] = [
+        { name: "Login", screen: LoginScreen },
+        { name: "Register", screen: RegisterScreen }
     ]
     //Arreglo con rutas para usuarios Autenticados
-    const routesAuth:Routes[]=[
-        {name:"Home",screen:HomeScreen}
+    const routesAuth: Routes[] = [
+        { name: "Home", screen: HomeScreen },
+        {name:"Detail", screen:DetailAutoScreen,headerShow:true, title:'Detalle Auto'},
     ]
-  return (
-    <>
-        {
-            isLoading ?
-            (
-                <View style={styles.content}>
-                    <ActivityIndicator size={50}/>
-                </View>
-            ):(
-                <Stack.Navigator>
-                    {
-                        !isAuth ?
-                        routesNoAuth.map((item,index)=>(
-                            <Stack.Screen key={index} name={item.name} options={{headerShown:false}} component={item.screen}/>
-                        ))
-                        :
-                        routesAuth.map((item,index)=>(
-                            <Stack.Screen key={index} name={item.name} options={{headerShown:false}} component={item.screen}/>
-                        ))
-                    }
-                </Stack.Navigator>
-            )
-        }
-    </>
-  )
+    return (
+        <>
+            {
+                isLoading ?
+                    (
+                        <View style={styles.content}>
+                            <ActivityIndicator size={50} />
+                        </View>
+                    ) : (
+                        <Stack.Navigator>
+                            {
+                                !isAuth ?
+                                    routesNoAuth.map((item, index) => (
+                                        <Stack.Screen key={index} name={item.name} options={{ headerShown: false }} component={item.screen} />
+                                    ))
+                                    :
+                                    routesAuth.map((item, index) => (
+                                        <Stack.Screen key={index} name={item.name} options={{ headerShown: false }} component={item.screen} />
+                                    ))
+                            }
+                        </Stack.Navigator>
+                    )
+            }
+        </>
+    )
 }
